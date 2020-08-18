@@ -36,7 +36,7 @@ lazy val root = (project in file("."))
         </developer>
       </developers>
   )
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.3"
 
 crossScalaVersions := Seq(scalaVersion.value, "2.12.8", "2.11.12")
 
