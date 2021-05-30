@@ -15,7 +15,7 @@ scalaVersion := "2.13.5"
 crossScalaVersions := Seq(scalaVersion.value, "2.12.12")
 
 val playVersion = "2.8.8"
-val prometheusClientVersion = "0.9.0"
+val prometheusClientVersion = "0.11.0"
 
 libraryDependencies ++= Seq(
   "io.prometheus" % "simpleclient" % prometheusClientVersion,
