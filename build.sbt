@@ -11,10 +11,9 @@ lazy val root = (project in file("."))
 publishTo := sonatypePublishToBundle.value
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials.sonatype")
 
-scalaVersion := "2.13.8"
-crossScalaVersions := Seq(scalaVersion.value, "2.12.15")
+scalaVersion := "2.13.12"
 
-val playVersion = "2.8.13"
+val playVersion = "2.9.0"
 val prometheusClientVersion = "0.9.0"
 
 libraryDependencies ++= Seq(
@@ -27,11 +26,11 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-guice" % playVersion % Provided,
 
   // This library makes some Scala 2.13 APIs available on Scala 2.11 and 2.12.
-  "org.scala-lang.modules" %% "scala-collection-compat" % "2.6.0"
+  "org.scala-lang.modules" %% "scala-collection-compat" % "2.11.0"
 )
 
 libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test,
   "org.scalatestplus" %% "mockito-3-4" % "3.2.10.0" % Test,
-  "org.mockito" % "mockito-core" % "4.2.0" % Test
+  "org.mockito" % "mockito-core" % "5.8.0" % Test
 )

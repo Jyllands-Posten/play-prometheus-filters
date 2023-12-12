@@ -17,10 +17,11 @@ import play.api.test.Helpers.stubControllerComponents
 import play.api.test.{DefaultAwaitTimeout, FakeRequest, FutureAwaits}
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import akka.stream.Materializer
 
 class StatusAndRouteCounterFilterSpec extends AnyWordSpec with Matchers with MockitoSugar with Results with DefaultAwaitTimeout with FutureAwaits with GuiceOneAppPerSuite  {
 
-  private implicit val mat = app.materializer
+  private implicit val mat: Materializer= app.materializer
   private val configuration = mock[Configuration]
 
   "Filter constructor" should {

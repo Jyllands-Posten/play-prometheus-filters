@@ -152,7 +152,7 @@ object LatencyRequestMetrics {
 
       new LatencyRequestMetric(metric, unmatchedDefaults) {
         override def mark(requestTime: Double)(implicit requestHeader: RequestHeader, result: Result): Unit = {
-          metric.labels(routeLabel, statusLabel, controllerLabel, pathLabel, verbLabel).observe(requestTime)
+          this.metric.labels(routeLabel, statusLabel, controllerLabel, pathLabel, verbLabel).observe(requestTime)
         }
       }
     }
@@ -169,7 +169,7 @@ object LatencyRequestMetrics {
         .register(registry)
       new LatencyRequestMetric(metric, unmatchedDefaults) {
         override def mark(requestTime: Double)(implicit requestHeader: RequestHeader, result: Result): Unit = {
-          metric.observe(requestTime)
+          this.metric.observe(requestTime)
         }
       }
     }
@@ -188,7 +188,7 @@ object LatencyRequestMetrics {
 
       new LatencyRequestMetric(metric, unmatchedDefaults) {
         override def mark(requestTime: Double)(implicit requestHeader: RequestHeader, result: Result): Unit = {
-          metric.labels(routeLabel).observe(requestTime)
+          this.metric.labels(routeLabel).observe(requestTime)
         }
       }
     }

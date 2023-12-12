@@ -6,4 +6,8 @@ target
 /.project
 /.settings
 /RUNNING_PID
-/.bloop
+.bloop/
+.metals/
+.bsp
+.vscode
+metals.sbt
