@@ -1,9 +1,11 @@
+import scala.collection.Seq
+
 Global / onChangedBuildSource := ReloadOnSourceChanges
-
 name := "play-prometheus-filters"
-organization := "io.github.jyllands-posten"
-
 version := "1.0.0"
+scalaVersion := "2.13.8"
+val playVersion = "3.0.0"
+val prometheusClientVersion = "0.16.0"
 
 lazy val root = project in file(".")
 
@@ -11,11 +13,38 @@ lazy val root = project in file(".")
 publishTo := sonatypePublishToBundle.value
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials.sonatype")
 
-scalaVersion := "2.13.8"
-crossScalaVersions := Seq(scalaVersion.value, "2.12.15")
+// sbt-github-actions defaults to using JDK 8 for testing and publishing.
+// The following adds JDK 17 for testing.
+ThisBuild / githubWorkflowJavaVersions += JavaSpec.temurin("17")
 
-val playVersion = "3.0.0"
-val prometheusClientVersion = "0.16.0"
+// sbt-ci
+inThisBuild(List(
+  organization := "io.github.sdudzin",
+  homepage := Some(url("https://github.com/sdudzin/play-prometheus-filters")),
+  // Alternatively License.Apache2 see https://github.com/sbt/librarymanagement/blob/develop/core/src/main/scala/sbt/librarymanagement/License.scala
+  licenses := List("MIT License" -> url("http://www.opensource.org/licenses/mit-license.php")),
+  developers := List(
+    Developer(
+      "sdudzin",
+      "Siarhei Dudzin",
+      "sdudzin@hiveteq.com",
+      url("https://github.com/sdudzin/")
+    )
+  )
+))
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
+
+// sbt-github-actions
+ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
+ThisBuild / githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")))
+ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Sbt(
+    commands = List("ci-release"),
+    name = Some("Publish project"),
+  )
+)
+ThisBuild / githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("test", "scripted")))
 
 libraryDependencies ++= Seq(
   "io.prometheus" % "simpleclient" % prometheusClientVersion,
