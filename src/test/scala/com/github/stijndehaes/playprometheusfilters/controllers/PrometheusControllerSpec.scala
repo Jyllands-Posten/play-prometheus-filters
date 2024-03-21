@@ -11,14 +11,14 @@ import play.api.test.Helpers._
 
 import java.util.Collections
 
-
 class PrometheusControllerSpec extends PlaySpec with Results with MockitoSugar {
 
   "Get metrics method" should {
     "Return the prometheus metrics" in {
       val collectorRegistry = mock[CollectorRegistry]
       val metricsFamilySample = new MetricFamilySamples("test", Collector.Type.COUNTER, "help", Collections.emptyList())
-      when(collectorRegistry.metricFamilySamples()).thenReturn(new java.util.Vector(Collections.singleton(metricsFamilySample)).elements)
+      when(collectorRegistry.metricFamilySamples())
+        .thenReturn(new java.util.Vector(Collections.singleton(metricsFamilySample)).elements)
 
       val client = new PrometheusController(collectorRegistry, stubControllerComponents())
 

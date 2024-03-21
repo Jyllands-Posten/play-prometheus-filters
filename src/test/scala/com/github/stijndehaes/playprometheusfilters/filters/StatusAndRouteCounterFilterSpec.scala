@@ -20,7 +20,14 @@ import play.api.test.{DefaultAwaitTimeout, FakeRequest, FutureAwaits}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class StatusAndRouteCounterFilterSpec extends AnyWordSpec with Matchers with MockitoSugar with Results with DefaultAwaitTimeout with FutureAwaits with GuiceOneAppPerSuite  {
+class StatusAndRouteCounterFilterSpec
+    extends AnyWordSpec
+    with Matchers
+    with MockitoSugar
+    with Results
+    with DefaultAwaitTimeout
+    with FutureAwaits
+    with GuiceOneAppPerSuite {
 
   private implicit val mat: Materializer = app.materializer
   private val configuration = mock[Configuration]
@@ -36,9 +43,11 @@ class StatusAndRouteCounterFilterSpec extends AnyWordSpec with Matchers with Moc
   "Apply method" should {
     "Measure the count" in {
       val filter = new StatusAndRouteCounterFilter(mock[CollectorRegistry], configuration)
-      val rh = FakeRequest().withAttrs( TypedMap(
-        Router.Attrs.HandlerDef -> HandlerDef(null, null, "testController", "test", null, "GET", "/path", null ,null)
-      ))
+      val rh = FakeRequest().withAttrs(
+        TypedMap(
+          Router.Attrs.HandlerDef -> HandlerDef(null, null, "testController", "test", null, "GET", "/path", null, null)
+        )
+      )
       val action = new MockController(stubControllerComponents()).ok
 
       await(filter(action)(rh).run())
@@ -46,7 +55,7 @@ class StatusAndRouteCounterFilterSpec extends AnyWordSpec with Matchers with Moc
       val metrics = filter.metrics(0).metric.collect()
       metrics must have size 1
       val samples = metrics.get(0).samples
-      //this is the count sample
+      // this is the count sample
       val countSample = samples.get(0)
       countSample.value mustBe 1.0
       countSample.labelValues must have size 5
@@ -67,7 +76,7 @@ class StatusAndRouteCounterFilterSpec extends AnyWordSpec with Matchers with Moc
       val metrics = filter.metrics(0).metric.collect()
       metrics must have size 1
       val samples = metrics.get(0).samples
-      //this is the count sample
+      // this is the count sample
       val countSample = samples.get(0)
       countSample.value mustBe 1.0
       countSample.labelValues must have size 5

@@ -1,14 +1,13 @@
 package com.github.stijndehaes.playprometheusfilters.helpers
 
 /**
-  * Source: https://gist.github.com/jorgeortiz85/908035
-  *
-  * Usage:
-  *   p(instance)('privateMethod)(arg1, arg2, arg3)
-  *
-  * @param x
-  * @param methodName
-  */
+ * Source: https://gist.github.com/jorgeortiz85/908035
+ *
+ * Usage: p(instance)('privateMethod)(arg1, arg2, arg3)
+ *
+ * @param x
+ * @param methodName
+ */
 class PrivateMethodCaller(x: AnyRef, methodName: String) {
   def apply(_args: Any*): Any = {
     val args = _args.map(_.asInstanceOf[AnyRef])

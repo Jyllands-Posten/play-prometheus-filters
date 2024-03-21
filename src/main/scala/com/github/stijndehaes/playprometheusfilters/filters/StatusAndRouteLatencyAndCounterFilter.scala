@@ -11,13 +11,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 /**
-  * A [[MetricsFilter]] using a both a histogram and counter metric to record latency and count requests.
-  *
-  * Latency metric adds 'RouteActionMethod', 'Status', 'Controller', 'Path' and 'Verb' labels.  
-  * Counter metric adds 'method', 'status', 'controller', 'path' and 'verb' labels.
-  */
+ * A [[MetricsFilter]] using a both a histogram and counter metric to record latency and count requests.
+ *
+ * Latency metric adds 'RouteActionMethod', 'Status', 'Controller', 'Path' and 'Verb' labels. Counter metric adds
+ * 'method', 'status', 'controller', 'path' and 'verb' labels.
+ */
 @Singleton
-class StatusAndRouteLatencyAndCounterFilter @Inject()(registry: CollectorRegistry, configuration: Configuration)(implicit mat: Materializer, ec: ExecutionContext) extends MetricsFilter(configuration) {
+class StatusAndRouteLatencyAndCounterFilter @Inject() (registry: CollectorRegistry, configuration: Configuration)(
+  implicit
+  mat: Materializer,
+  ec: ExecutionContext
+) extends MetricsFilter(configuration) {
 
   override val metrics = List(
     LatencyRequestMetricsBuilder.build(registry, DefaultPlayUnmatchedDefaults),

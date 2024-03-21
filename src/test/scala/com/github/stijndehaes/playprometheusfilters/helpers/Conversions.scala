@@ -9,9 +9,10 @@ object Conversions {
 
   case class MetricSample(metricName: String, value: Double, labelValues: List[String])
 
-  def toMetricSamples(javaMetricSamples: util.List[MetricFamilySamples.Sample]): List[MetricSample] = javaMetricSamples.map { sample =>
-    MetricSample(sample.name, sample.value, sample.labelValues)
-  }
+  def toMetricSamples(javaMetricSamples: util.List[MetricFamilySamples.Sample]): List[MetricSample] =
+    javaMetricSamples.map { sample =>
+      MetricSample(sample.name, sample.value, sample.labelValues)
+    }
 
   implicit def toScalaList[A](jList: java.util.List[A]): List[A] = jList.asScala.toList
 }

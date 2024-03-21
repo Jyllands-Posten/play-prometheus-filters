@@ -9,7 +9,12 @@ import org.scalatest.{BeforeAndAfter, PrivateMethodTester}
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.inject.guice.GuiceApplicationBuilder
 
-class PrometheusModuleSpec extends AnyWordSpec with Matchers with BeforeAndAfter with PrivateMethodTester with GuiceOneAppPerTest {
+class PrometheusModuleSpec
+    extends AnyWordSpec
+    with Matchers
+    with BeforeAndAfter
+    with PrivateMethodTester
+    with GuiceOneAppPerTest {
 
   before {
     // clearing registry before each test
@@ -24,22 +29,25 @@ class PrometheusModuleSpec extends AnyWordSpec with Matchers with BeforeAndAfter
         .build()
 
       val collector = app.injector.instanceOf[CollectorRegistry]
-      val collectors: util.HashSet[Collector] = PrivateMethodExposer(collector)(Symbol("collectors"))().asInstanceOf[java.util.HashSet[Collector]]//PrivateMethod[java.util.HashSet[Collector]](Symbol(collectors))
-      collectors.size must be (0)
+      val collectors: util.HashSet[Collector] = PrivateMethodExposer(collector)(Symbol("collectors"))()
+        .asInstanceOf[java.util.HashSet[Collector]] // PrivateMethod[java.util.HashSet[Collector]](Symbol(collectors))
+      collectors.size must be(0)
     }
   }
 
   /**
-    * Utility to expose exporter names for test on [[CollectorRegistry]].
-    */
+   * Utility to expose exporter names for test on [[CollectorRegistry]].
+   */
   implicit class CollectorRegistryExtention(val registry: CollectorRegistry) {
+
     /**
-      * @return Registered exporter names.
-      */
+     * @return
+     *   Registered exporter names.
+     */
     def getExporterNames: collection.Seq[String] = {
       val exportNames = collection.mutable.Buffer.empty[String]
       val mfs = registry.metricFamilySamples()
-      while(mfs.hasMoreElements) {
+      while (mfs.hasMoreElements) {
         exportNames += mfs.nextElement().name
       }
       exportNames

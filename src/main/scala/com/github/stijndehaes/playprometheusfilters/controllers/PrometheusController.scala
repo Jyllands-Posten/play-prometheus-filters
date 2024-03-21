@@ -10,20 +10,21 @@ import org.slf4j.LoggerFactory
 import play.api.http.HttpEntity
 
 /**
-  * A Play controller implementation to return collected metrics.
-  * Use this controller to create an endpoint which can be scraped by Prometheus.
-  *
-  * Add to your `routes.conf`:
-  * {{{
-  *   # Prometheus metrics
-  *   GET  /metrics  io.github.stijndehaes.playprometheusfilters.controllers.PrometheusController.getMetrics
-  * }}}
-  */
-class PrometheusController @Inject()(registry: CollectorRegistry, cc: ControllerComponents) extends AbstractController(cc) {
+ * A Play controller implementation to return collected metrics. Use this controller to create an endpoint which can be
+ * scraped by Prometheus.
+ *
+ * Add to your `routes.conf`:
+ * {{{
+ *   # Prometheus metrics
+ *   GET  /metrics  io.github.stijndehaes.playprometheusfilters.controllers.PrometheusController.getMetrics
+ * }}}
+ */
+class PrometheusController @Inject() (registry: CollectorRegistry, cc: ControllerComponents)
+    extends AbstractController(cc) {
 
   private val logger = LoggerFactory.getLogger(classOf[PrometheusController])
 
-  def getMetrics = Action {
+  def getMetrics: Action[AnyContent] = Action {
     logger.trace("Metrics call received")
     val samples = new StringBuilder()
     val writer = new WriterAdapter(samples)
