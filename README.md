@@ -199,7 +199,9 @@ Bump version and add `-SNAPSHOT` in build.sbt
 
 ## Credits
 
-Special Thanks to [`@stijndehaes`](https://github.com/stijndehaes), whos work this project was forked from
+Special Thanks to 
+- [`@stijndehaes`](https://github.com/stijndehaes), whose work this project was forked from.
+- [`@mveeprojects`](https://github.com/mveeprojects) for upgrading the project to Play 3.0.
 
 You can find the original project here [play-prometheus-filters](https://github.com/stijndehaes/play-prometheus-filters)
 
