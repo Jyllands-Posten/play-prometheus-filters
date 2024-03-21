@@ -3,7 +3,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 name := "play-prometheus-filters"
 organization := "io.github.jyllands-posten"
 
-version := "1.0.1"
+version := "1.0.2"
 
 lazy val root = project in file(".")
 
@@ -13,7 +13,7 @@ credentials += Credentials(Path.userHome / ".sbt" / ".credentials.sonatype")
 
 scalaVersion := "2.13.13"
 
-val playVersion = "3.0.1"
+val playVersion = "3.0.2"
 val prometheusClientVersion = "0.16.0"
 
 libraryDependencies ++= Seq(
