@@ -1,8 +1,5 @@
 package com.github.stijndehaes.playprometheusfilters.controllers
 
-import java.util.Collections
-
-import com.github.stijndehaes.playprometheusfilters.controllers.PrometheusController
 import io.prometheus.client.Collector.MetricFamilySamples
 import io.prometheus.client.{Collector, CollectorRegistry}
 import org.mockito.Mockito._
@@ -11,6 +8,8 @@ import org.scalatestplus.play.PlaySpec
 import play.api.mvc.Results
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+
+import java.util.Collections
 
 
 class PrometheusControllerSpec extends PlaySpec with Results with MockitoSugar {
@@ -27,8 +26,7 @@ class PrometheusControllerSpec extends PlaySpec with Results with MockitoSugar {
 
       val result = client.getMetrics.apply(request)
       status(result) mustBe OK
-      contentAsString(result) mustBe "# HELP test help\n# TYPE test counter\n"
+      contentAsString(result) mustBe "# HELP test_total help\n# TYPE test_total counter\n"
     }
   }
-
 }

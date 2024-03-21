@@ -16,15 +16,16 @@ To use the library add the following to you build.sbt:
 libraryDependencies += "io.github.jyllands-posten" %% "play-prometheus-filters" % "0.6.1"
 
 ```
-This latest version supports Play 2.8.
+This latest version supports Play 3.0.
 For more info on play version compatibility see the releases matrix.
 
 
 ## Releases
 
-| Release     | Play version |
-| :---------- | :----------- |
-| 0.6.x       | 2.8.x        |
+| Release | Play version |
+|:--------|:-------------|
+| 1.0.0   | 3.0.x        |
+| 0.6.x   | 2.8.x        |
 
 For earlier play versions, see the original repository [play-prometheus-filters](https://github.com/stijndehaes/play-prometheus-filters)
 

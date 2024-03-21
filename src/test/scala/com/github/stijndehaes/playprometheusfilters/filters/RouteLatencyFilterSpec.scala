@@ -1,8 +1,10 @@
 package com.github.stijndehaes.playprometheusfilters.filters
 
-import com.github.stijndehaes.playprometheusfilters.metrics.DefaultPlayUnmatchedDefaults
+import com.github.stijndehaes.playprometheusfilters.helpers.Conversions._
+import com.github.stijndehaes.playprometheusfilters.metrics.DefaultPlayUnmatchedDefaults.UnmatchedRouteString
 import com.github.stijndehaes.playprometheusfilters.mocks.MockController
 import io.prometheus.client.CollectorRegistry
+import org.apache.pekko.stream.Materializer
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.verify
 import org.scalatest.matchers.must.Matchers
@@ -18,9 +20,16 @@ import play.api.test.{DefaultAwaitTimeout, FakeRequest, FutureAwaits}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class RouteLatencyFilterSpec extends AnyWordSpec with Matchers with MockitoSugar with Results with DefaultAwaitTimeout with FutureAwaits with GuiceOneAppPerSuite  {
+class RouteLatencyFilterSpec
+    extends AnyWordSpec
+    with Matchers
+    with MockitoSugar
+    with Results
+    with DefaultAwaitTimeout
+    with FutureAwaits
+    with GuiceOneAppPerSuite {
 
-  private implicit val mat = app.materializer
+  private implicit val mat: Materializer = app.materializer
   private val configuration = mock[Configuration]
 
   "Filter constructor" should {
@@ -34,21 +43,28 @@ class RouteLatencyFilterSpec extends AnyWordSpec with Matchers with MockitoSugar
   "Apply method" should {
     "Measure the latency" in {
       val filter = new RouteLatencyFilter(mock[CollectorRegistry], configuration)
-      val rh = FakeRequest().withAttrs( TypedMap(
-        Router.Attrs.HandlerDef -> HandlerDef(null, null, null, "test", null, null ,null ,null ,null)
-      ))
+      val rh = FakeRequest().withAttrs(
+        TypedMap(
+          Router.Attrs.HandlerDef -> HandlerDef(null, null, null, "test", null, null, null, null, null)
+        )
+      )
       val action = new MockController(stubControllerComponents()).ok
 
       await(filter(action)(rh).run())
 
-      val metrics = filter.metrics(0).metric.collect()
-      metrics must have size 1
-      val samples = metrics.get(0).samples
-      //this is the count sample
-      val countSample = samples.get(samples.size() - 2)
-      countSample.value mustBe 1.0
-      countSample.labelValues must have size 1
-      countSample.labelValues.get(0) mustBe "test"
+      val latencyMetrics = filter.metrics.head.metric.collect()
+      latencyMetrics must have size 1
+
+      val maybeRequestLatencySecondsCount: Option[MetricSample] =
+        toMetricSamples(latencyMetrics.head.samples)
+          .find(_.metricName.equals("requests_latency_seconds_count"))
+
+      maybeRequestLatencySecondsCount must not be empty
+      maybeRequestLatencySecondsCount.map { result =>
+        result.value mustBe 1.0
+        result.labelValues must have size 1
+        result.labelValues mustBe List("test")
+      }
     }
 
     "Measure the latency for an unmatched route" in {
@@ -58,15 +74,19 @@ class RouteLatencyFilterSpec extends AnyWordSpec with Matchers with MockitoSugar
 
       await(filter(action)(rh).run())
 
-      val metrics = filter.metrics(0).metric.collect()
-      metrics must have size 1
-      val samples = metrics.get(0).samples
-      //this is the count sample
-      val countSample = samples.get(samples.size() - 2)
-      countSample.value mustBe 1.0
-      countSample.labelValues must have size 1
-      countSample.labelValues.get(0) mustBe DefaultPlayUnmatchedDefaults.UnmatchedRouteString
+      val latencyMetrics = filter.metrics.head.metric.collect()
+      latencyMetrics must have size 1
+
+      val maybeRequestLatencySecondsCount: Option[MetricSample] =
+        toMetricSamples(latencyMetrics.head.samples)
+          .find(_.metricName.equals("requests_latency_seconds_count"))
+
+      maybeRequestLatencySecondsCount must not be empty
+      maybeRequestLatencySecondsCount.map { result =>
+        result.value mustBe 1.0
+        result.labelValues must have size 1
+        result.labelValues mustBe List(UnmatchedRouteString)
+      }
     }
   }
-
 }
