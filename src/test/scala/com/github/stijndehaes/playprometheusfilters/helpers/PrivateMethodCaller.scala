@@ -1,8 +1,5 @@
 package com.github.stijndehaes.playprometheusfilters.helpers
 
-import scala.collection.compat._
-import immutable.LazyList
-
 /**
   * Source: https://gist.github.com/jorgeortiz85/908035
   *

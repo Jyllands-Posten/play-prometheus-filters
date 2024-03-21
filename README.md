@@ -13,7 +13,7 @@ https://github.com/Jyllands-Posten/play-prometheus-filters-example-app
 To use the library add the following to you build.sbt:
 
 ```scala
-libraryDependencies += "io.github.jyllands-posten" %% "play-prometheus-filters" % "0.6.1"
+libraryDependencies += "io.github.jyllands-posten" %% "play-prometheus-filters" % "1.0.0"
 
 ```
 This latest version supports Play 3.0.
@@ -22,10 +22,10 @@ For more info on play version compatibility see the releases matrix.
 
 ## Releases
 
-| Release | Play version |
-|:--------|:-------------|
-| 1.0.0   | 3.0.x        |
-| 0.6.x   | 2.8.x        |
+| Release | Play version | Scala version  |
+|:--------|:-------------|:---------------|
+| 1.0.0   | 3.0.x        | 2.13.x         |
+| 0.6.x   | 2.8.x        | 2.12.x, 2.13.x |
 
 For earlier play versions, see the original repository [play-prometheus-filters](https://github.com/stijndehaes/play-prometheus-filters)
 
