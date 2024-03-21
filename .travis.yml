@@ -1,13 +1,13 @@
 language: scala
 scala:
-   - 2.13.1
+   - 2.13.13
 cache:
   directories:
     - $HOME/.m2/repository
     - $HOME/.sbt
     - $HOME/.ivy2
 jdk:
-  - openjdk11
+  - openjdk21
 script:
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
 after_success:
