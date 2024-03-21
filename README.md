@@ -195,6 +195,8 @@ Tag the release ```git tag ${version}```
 
 Push the tag to remote ```git push origin ${version}```
 
+Run ```sbt clean``` to make sure the sbt-sonatype plugin does not use cached artifacts.
+
 Release to sonatype ```sbt "+ publishSigned; sonatypeBundleRelease"```
 
 Bump version and add `-SNAPSHOT` in build.sbt
