@@ -26,11 +26,8 @@ class PrometheusController @Inject() (registry: CollectorRegistry, cc: Controlle
 
   def getMetrics: Action[AnyContent] = Action {
     logger.trace("Metrics call received")
-    val samples = new StringBuilder()
-    val writer = new WriterAdapter(samples)
-    TextFormat.write004(writer, registry.metricFamilySamples())
-    writer.close()
-
+    val samples = new StringWriter()
+    TextFormat.write004(samples, registry.metricFamilySamples())
     Result(
       header = ResponseHeader(200, Map.empty),
       body = HttpEntity.Strict(ByteString(samples.toString), Some(TextFormat.CONTENT_TYPE_004))
