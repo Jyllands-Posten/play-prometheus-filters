@@ -11,7 +11,10 @@ lazy val root = project in file(".")
 publishTo := sonatypePublishToBundle.value
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials.sonatype")
 
-scalaVersion := "2.13.13"
+lazy val scala213 = "2.13.13"
+lazy val scala3 = "3.3.3"
+scalaVersion := scala3
+crossScalaVersions := Seq(scala213, scala3)
 
 val playVersion = "3.0.2"
 val prometheusClientVersion = "0.16.0"
