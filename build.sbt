@@ -12,7 +12,7 @@ publishTo := sonatypePublishToBundle.value
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials.sonatype")
 
 lazy val scala213 = "2.13.13"
-lazy val scala3 = "3.3.3"
+lazy val scala3 = "3.4.2"
 scalaVersion := scala3
 crossScalaVersions := Seq(scala213, scala3)
 
