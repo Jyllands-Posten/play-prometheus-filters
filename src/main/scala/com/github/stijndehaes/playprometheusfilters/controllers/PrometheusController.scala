@@ -1,13 +1,15 @@
 package com.github.stijndehaes.playprometheusfilters.controllers
 
 import org.apache.pekko.util.ByteString
-import com.github.stijndehaes.playprometheusfilters.utils.WriterAdapter
+
 import javax.inject._
 import play.api.mvc._
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
 import org.slf4j.LoggerFactory
 import play.api.http.HttpEntity
+
+import java.io.StringWriter
 
 /**
  * A Play controller implementation to return collected metrics. Use this controller to create an endpoint which can be
@@ -26,10 +28,8 @@ class PrometheusController @Inject() (registry: CollectorRegistry, cc: Controlle
 
   def getMetrics: Action[AnyContent] = Action {
     logger.trace("Metrics call received")
-    val samples = new StringBuilder()
-    val writer = new WriterAdapter(samples)
-    TextFormat.write004(writer, registry.metricFamilySamples())
-    writer.close()
+    val samples = new StringWriter()
+    TextFormat.write004(samples, registry.metricFamilySamples())
 
     Result(
       header = ResponseHeader(200, Map.empty),
