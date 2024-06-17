@@ -16,7 +16,7 @@ lazy val scala3 = "3.3.3"
 scalaVersion := scala3
 crossScalaVersions := Seq(scala213, scala3)
 
-val playVersion = "3.0.2"
+val playVersion = "3.0.4"
 val prometheusClientVersion = "0.16.0"
 
 libraryDependencies ++= Seq(
